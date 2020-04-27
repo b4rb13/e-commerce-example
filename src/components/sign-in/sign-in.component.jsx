@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { signInWithGoogle } from '../../firebase/firabase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firabase.utils';
 import './sign-in.styles.scss';
 
 const SignIn = () => {
@@ -10,9 +10,15 @@ const SignIn = () => {
     password: '',
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async event => {
+    event.preventDefault();
+    const { email, password } = credentials;
+    try {
+      await auth.signInWithEmailAndPassword(email, password)
     setCredentials({ email: '', password: '' });
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const handleChange = (e) => {

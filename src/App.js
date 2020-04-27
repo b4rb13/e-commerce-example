@@ -1,26 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
-import Header from "./components/header/header.component";
+import Header from './components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
-import ShopPage from "./pages/shop/shop.component";
-import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import ShopPage from './pages/shop/shop.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
-import {auth} from "./firebase/firabase.utils";
+import { auth, createUserProfileDocument } from './firebase/firabase.utils';
 
 function App() {
-
-  const[currentUser, setCurrentUser] = useState(null);
-
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-     const unsubscribeFormAuth = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
-      console.log("mount")
+    const unsubscribeFormAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data(),
+          });
+        });
+
+      }
+      setCurrentUser(userAuth)
     });
     return () => {
-      console.log("unmount")
-      unsubscribeFormAuth()
+      unsubscribeFormAuth();
     };
   }, []);
 
