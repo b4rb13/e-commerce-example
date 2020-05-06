@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-
+import { connect } from 'react-redux';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-
+import { signUpStart } from '../../redux/user/user.actions';
 import { auth, createUserProfileDocument } from '../../firebase/firabase.utils';
 
 import './sign-up.styles.scss';
 
-const SignUp = () => {
+const SignUp = ({signUpStart}) => {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,18 +20,7 @@ const SignUp = () => {
       alert("passwords don't match");
       return;
     }
-
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);
-
-      await createUserProfileDocument(user, { displayName });
-      setDisplayName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-    } catch (error) {
-      console.error(error);
-    }
+    signUpStart({displayName, email, password})
   };
 
   const handleChangeDisplayName = (event) => {
@@ -90,4 +79,8 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = dispatch => ({
+  signUpStart: userCredentials => dispatch(signUpStart(userCredentials))
+})
+
+export default connect(null, mapDispatchToProps)(SignUp);
