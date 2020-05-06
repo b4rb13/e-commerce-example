@@ -11,11 +11,10 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
     password: '',
   });
 
+  const { email, password } = credentials;
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { email, password } = credentials;
     emailSignInStart(email, password);
-
   };
 
   const handleChange = (e) => {
@@ -33,7 +32,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
           type="email"
           label="Email"
           name="email"
-          value={credentials.email}
+          value={email}
           handleChange={handleChange}
           required
         />
@@ -41,7 +40,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
           type="password"
           label="Password"
           name="password"
-          value={credentials.password}
+          value={password}
           handleChange={handleChange}
           required
         />
@@ -58,7 +57,7 @@ const SignIn = ({ googleSignInStart, emailSignInStart }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   googleSignInStart: () => dispatch(googleSignInStart()),
-  emailSignInStart: (email, password) => dispatch(emailSignInStart({email, password}))
+  emailSignInStart: (email, password) => dispatch(emailSignInStart({ email, password })),
 });
 
 export default connect(null, mapDispatchToProps)(SignIn);

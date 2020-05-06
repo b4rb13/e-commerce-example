@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { signUpStart } from '../../redux/user/user.actions';
-import { auth, createUserProfileDocument } from '../../firebase/firabase.utils';
 
 import './sign-up.styles.scss';
 
-const SignUp = ({signUpStart}) => {
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
+const SignUp = ({ signUpStart }) => {
+  const [credentials, setCredentials] = useState({
+    displayName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const { displayName, email, password, confirmPassword } = credentials;
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -20,20 +21,12 @@ const SignUp = ({signUpStart}) => {
       alert("passwords don't match");
       return;
     }
-    signUpStart({displayName, email, password})
+    signUpStart({ displayName, email, password });
   };
 
-  const handleChangeDisplayName = (event) => {
-    setDisplayName(event.target.value);
-  };
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
-  const handleChangeConfirmPassword = (event) => {
-    setConfirmPassword(event.target.value);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCredentials({ ...credentials, [name]: value });
   };
 
   return (
@@ -42,7 +35,7 @@ const SignUp = ({signUpStart}) => {
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit} className="sign-up-form">
         <FormInput
-          handleChange={handleChangeDisplayName}
+          handleChange={handleChange}
           type="text"
           name="displayName"
           value={displayName}
@@ -50,7 +43,7 @@ const SignUp = ({signUpStart}) => {
           required
         />
         <FormInput
-          handleChange={handleChangeEmail}
+          handleChange={handleChange}
           type="email"
           name="email"
           value={email}
@@ -58,7 +51,7 @@ const SignUp = ({signUpStart}) => {
           required
         />
         <FormInput
-          handleChange={handleChangePassword}
+          handleChange={handleChange}
           type="password"
           name="password"
           value={password}
@@ -66,7 +59,7 @@ const SignUp = ({signUpStart}) => {
           required
         />
         <FormInput
-          handleChange={handleChangeConfirmPassword}
+          handleChange={handleChange}
           type="password"
           name="confirmPassword"
           value={confirmPassword}
@@ -79,8 +72,8 @@ const SignUp = ({signUpStart}) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  signUpStart: userCredentials => dispatch(signUpStart(userCredentials))
-})
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
+});
 
 export default connect(null, mapDispatchToProps)(SignUp);

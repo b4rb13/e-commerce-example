@@ -1,6 +1,5 @@
 import ShopActionTypes from './shop.types';
 import {
-  fairstore,
   convertCollectionsSnapshotToMap,
   firestore,
 } from '../../firebase/firabase.utils';

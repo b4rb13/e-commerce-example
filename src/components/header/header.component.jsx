@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/071 crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart/cart-dropdown/cart-dropdown.component';
-import { auth } from '../../firebase/firabase.utils';
 import { signOutStart } from '../../redux/user/user.actions';
 import './header.style.scss';
 
