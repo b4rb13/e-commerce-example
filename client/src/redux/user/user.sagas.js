@@ -1,6 +1,6 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
+import { takeLatest, put, all, call } from "redux-saga/effects";
 
-import UserActionTypes from './user.types';
+import UserActionTypes from "./user.types";
 import {
   signInSuccess,
   signInFailure,
@@ -8,14 +8,14 @@ import {
   signOutFailure,
   signUpFailure,
   signUpSuccess,
-} from './user.actions';
+} from "./user.actions";
 
 import {
   auth,
   googleProvider,
   createUserProfileDocument,
   getCurrentUser,
-} from '../../firebase/firabase.utils';
+} from "../../firebase/firabase.utils";
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   try {
@@ -108,6 +108,6 @@ export function* userSagas() {
     call(onCheckUserSession),
     call(onSignOutStart),
     call(onSignUpStart),
-    call(onSignUpSuccess)
+    call(onSignUpSuccess),
   ]);
 }
